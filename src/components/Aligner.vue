@@ -21,7 +21,7 @@
       <rect
         :x="box2.x"
         :y="box2.y"
-        class="st0"
+        class="st0 red"
         :width="box2.width"
         :height="box2.height"
       />
@@ -52,7 +52,7 @@
       <rect
         :x="box4.x"
         :y="box4.y"
-        class="st0"
+        class="st0 red"
         :width="box4.width"
         :height="box4.height"
       />
@@ -86,6 +86,12 @@
       </label>
     </div>
 
+    <div>
+      <label>
+        <b>xadjust</b>:
+        <input type="text" v-model="xadjust" />
+      </label>
+    </div>
     <div>
       <label>
         <b>layer</b>:
@@ -124,7 +130,7 @@ export default class Aligner extends Vue {
   x2 = 11.78052;
   y2 = 9.398;
   width = 0.1524;
-
+  xadjust = 0;
   get box1() {
     const mult = 1;
     return {
@@ -156,8 +162,10 @@ export default class Aligner extends Vue {
     const itsEnd = -this.x2 + itsWidth;
     const endDiff = myEnd - itsEnd;
 
-    const thisx =
-      this.direction === "Left" ? this.x1 - endDiff : this.x1 + endDiff;
+    this.xadjust = this.direction === "Left" ? -endDiff : endDiff;
+
+    const thisx = this.x1 + this.xadjust;
+
     const thisxAdjust = -thisx + 100;
     const newX = (width - thisx).toFixed(4);
 
@@ -201,12 +209,16 @@ export default class Aligner extends Vue {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
 .st0 {
-  fill: #ffffff;
+  fill: none;
   stroke: #000000;
   stroke-miterlimit: 10;
 }
 
 .st2 {
   font-size: 12px;
+}
+
+.red {
+  stroke: red;
 }
 </style>
